@@ -6,17 +6,55 @@ public class LinkedLists {
     // Driver
     public static void main(String[] args) {
         Linkedlist list = new Linkedlist();
+        Random rand = new Random();
+       
+        // Fil list with integers 1-10
+        /*for (int i=10; i>0; i--)
+            list.append(i);*/
         
-        for (int i=0; i<10; i++)
-            list.append(i);
+        // Fill list with random integers
+        for (int i=0; i<20; i++){
+            int n = rand.nextInt(100);
+            list.append(n);
+        }
         
-        for (int i=0; i<10; i++)
-            list.prepend(i);
-        
+        // Remove duplicate entries
         list.removeDups(list);
         
+        
+        // Print the list unsorted
+        System.out.println("Unsorted Linkedlist - ");
         System.out.print(list.toString());
-        System.out.println();
+        
+        // Head of list
+        Node h = list.head;
+        System.out.println("\nHead node : " +h.data);
+        
+        // Mid of list
+        Node midNode = list.getMid(list.head);
+        System.out.println("Middle node: " +midNode.data);
+        
+        // Last of list
+        Node lastNode = list.lastNode(list.head);
+        System.out.println("Last node: " +lastNode.data);
+        
+        // Sort list and print
+        System.out.println("\nSorted Linkedlist - ");
+        list.head = list.mergeSort(list.head);
+        System.out.print(list.toString());
+        
+        // New head of list
+        System.out.println("\nHead node : " +list.head.data);
+        
+        // New mid of list
+        Node newMid = list.getMid(list.head);
+        System.out.println("Middle node: " +newMid.data);
+        
+        // New last of list
+        Node newLast = list.lastNode(list.head);
+        System.out.println("Last node: " +newLast.data);
+        
+        System.out.println("\n");
     }
 
     public static class Node {
@@ -80,6 +118,57 @@ public class LinkedLists {
                 }
                 current = current.next;
             }
+        }
+        
+        public Node mergeSort(Node h){
+            if (h == null || h.next == null) return h;
+            Node mid = getMid(h);
+            Node nextOfMid = mid.next;
+            mid.next = null;
+            
+            Node left = mergeSort(h);
+            Node right = mergeSort(nextOfMid);
+            
+            Node sortedList = sortedMerge(left, right);
+            return sortedList;    
+        }
+        
+        public Node sortedMerge(Node a, Node b){
+            Node result = null;
+            if (a == null) return b;
+            if (b == null) return a;
+            
+            if (a.data <= b.data) {
+                result = a;
+                result.next = sortedMerge(a.next, b);
+            }
+            else{
+                result = b;
+                result.next = sortedMerge(a, b.next);
+            }
+            return result;
+        }
+        
+        public Node getMid(Node h){
+            if (h == null) return h;
+            Node slowPtr = h;
+            Node fastPtr = h.next;
+            
+            while(fastPtr != null){
+                fastPtr = fastPtr.next;
+                if (fastPtr != null){
+                    slowPtr = slowPtr.next;
+                    fastPtr = fastPtr.next;
+                }
+            }
+            return slowPtr;
+        }
+        
+        public Node lastNode(Node h){
+            while(h.next != null){
+                h = h.next;
+            }
+            return h;
         }
         
         @Override
