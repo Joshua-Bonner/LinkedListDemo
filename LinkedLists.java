@@ -8,7 +8,7 @@ public class LinkedLists {
         Linkedlist list = new Linkedlist();
         Random rand = new Random();
        
-        // Fil list with integers 1-10
+        // Fill list with integers 1-10
         /*for (int i=10; i>0; i--)
             list.append(i);*/
         
@@ -21,14 +21,15 @@ public class LinkedLists {
         // Remove duplicate entries
         list.removeDups(list);
         
+        /* RANDOMLY GENERATED UNSORTED LINKED LIST */
         
         // Print the list unsorted
-        System.out.println("Unsorted Linkedlist - ");
-        System.out.print(list.toString());
+        System.out.println("\nUNSORTED LINKEDLIST -");
+        System.out.println(list.toString());
         
-        // Head of list
+        /* Head of list
         Node h = list.head;
-        System.out.println("\nHead node : " +h.data);
+        System.out.println("\nHead node: " +h.data);
         
         // Mid of list
         Node midNode = list.getMid(list.head);
@@ -38,13 +39,24 @@ public class LinkedLists {
         Node lastNode = list.lastNode(list.head);
         System.out.println("Last node: " +lastNode.data);
         
+        // Count number of nodes in list
+        int nodeCount = list.nodeCount(list.head);
+        System.out.println("Nodes in list: " +nodeCount);
+        
+        // Return kth specific node data
+        Node kthNode = list.kthNode(list.head, 5);
+        System.out.println("kth Node in list: " +kthNode.data); 
+
+        /******************************************/
+        
+        
         // Sort list and print
-        System.out.println("\nSorted Linkedlist - ");
+        System.out.println("\nSORTED LINKEDLIST - ");
         list.head = list.mergeSort(list.head);
         System.out.print(list.toString());
         
         // New head of list
-        System.out.println("\nHead node : " +list.head.data);
+        System.out.println("\nHead node: " +list.head.data);
         
         // New mid of list
         Node newMid = list.getMid(list.head);
@@ -54,7 +66,25 @@ public class LinkedLists {
         Node newLast = list.lastNode(list.head);
         System.out.println("Last node: " +newLast.data);
         
-        System.out.println("\n");
+        // Count the number of node in list
+        int newNodeCount = list.nodeCount(list.head);
+        System.out.println("Nodes in list: " +newNodeCount);
+        
+        // Return kth specific node data
+        int k = 5;
+        Node newKthNode = list.kthNode(list.head, k);
+        System.out.println(k+"th Node in list: " +newKthNode.data);
+        
+        // Sum of the integers in LL
+        int LLsum = list.sumList(list.head);
+        System.out.println("Sum of the LL is: " +LLsum);
+        
+        // Delete middle node
+        System.out.println("\nSORTED LINKEDLIST W/ MID REMOVED -");
+        list.delMidNode(list.head, newMid);
+        System.out.println(list.toString());
+        
+        System.out.println();
     }
 
     public static class Node {
@@ -171,15 +201,48 @@ public class LinkedLists {
             return h;
         }
         
+        public int nodeCount(Node h){
+            int count = 0;
+            while (h != null){
+                count++;
+                h = h.next;
+            }
+            return count;
+        }
+        
+        public Node kthNode(Node h, int k){
+            Node retNode = h;
+            for (int i=0; i <= k-2; i++)
+                retNode = retNode.next;
+            return retNode;
+        }
+        
+        public void delMidNode(Node h, Node midNode){
+            while (h.next != midNode){
+                h = h.next;
+            }
+            Node tmpNode = midNode.next;
+            h.next = tmpNode;
+        }
+        
+        public int sumList(Node h){
+            int sum = 0;
+            while(h != null){
+                sum += h.data;
+                h = h.next;
+            }
+            return sum;
+        }
+        
         @Override
         public String toString(){
             String retStr = "Contents: ";
             Node current = head;
             while (current != null){
-                retStr += current.data + " ";
+                retStr += current.data + " -> ";
                 current = current.next;
             }
-            return retStr;
+            return retStr + "NULL";
         }
     }
 }
